@@ -9,11 +9,13 @@ class ChatRequest(BaseModel):
         ..., 
         min_length=1, 
         max_length=1000,
-        description="用户的输入查询"
+        description="用户的输入查询",
+        examples=["现在几点了？"]
     )
     session_id: str | None = Field(
         default=None, 
-        description="会话ID。如果提供，将用于保持多轮对话的记忆。"
+        description="会话ID。如果提供，将用于保持多轮对话的记忆。",
+        examples=['uuid-here']
     )
 
 class ChatResponse(BaseModel):

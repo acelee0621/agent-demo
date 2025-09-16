@@ -2,7 +2,7 @@
 import random
 from datetime import datetime
 
-from langchain_core.tools import tool
+from langchain_core.tools import tool, ToolException
 
 
 # --- 1. 定义工具函数 ---
@@ -16,13 +16,15 @@ def calculator(expression: str) -> str:
         result = eval(expression, {"__builtins__": None}, {})
         return str(result)
     except Exception as e:
-        return f"计算出错: {e}"
+        raise ToolException(f"计算出错: {e}")
+
 
 @tool
 def get_current_time() -> str:
     """获取当前日期和时间字符串。"""
     current_time = datetime.now().isoformat()
-    return f'当前时间是{current_time}'
+    return f"当前时间是{current_time}"
+
 
 @tool
 def dice_roller(sides: int = 6) -> str:
@@ -36,4 +38,6 @@ def dice_roller(sides: int = 6) -> str:
 
 # --- 2. 将工具函数添加到列表中 ---
 
-demo_tools = [calculator, get_current_time, dice_roller]
+# tools = [calculator, get_current_time, dice_roller]
+
+__all__ = ["calculator", "get_current_time", "dice_roller"]

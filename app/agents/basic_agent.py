@@ -5,10 +5,10 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from loguru import logger
 
-from app.tools.demo_tools import demo_tools
+from app.tools import tools
 
 
-def assemble_langgraph_agent(llm: ChatOllama) -> Runnable:
+async def assemble_langgraph_agent(llm: ChatOllama) -> Runnable:
     """
     一个“组装厂”函数，负责将 LLM 和工具组装成一个可运行的 LangGraph Agent。
 
@@ -30,9 +30,9 @@ def assemble_langgraph_agent(llm: ChatOllama) -> Runnable:
     # 它可以快速创建一个遵循 ReAct (Reason + Act) 逻辑的 Agent。
     runnable_agent = create_react_agent(
         model=llm,
-        tools=demo_tools,
+        tools=tools,
         checkpointer=memory,
-        # prompt=agent_prompt,
+        # prompt="你是中文智能助手，回答简洁友好。"
     )
 
     logger.success(f"✅ LangGraph Agent 组装完成，使用模型: {llm.model}")

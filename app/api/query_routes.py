@@ -7,10 +7,10 @@ from langchain_core.runnables import Runnable
 from langchain_ollama import ChatOllama
 
 from app.core.deps import get_agent, get_llm
-from app.schemas.agent import ChatRequest, ChatResponse
+from app.schemas.chat_schema import ChatRequest, ChatResponse
 from app.services import agent_service
 
-# 创建一个 API 路由器实例，后续所有 API 端点都将注册到这里
+
 router = APIRouter(tags=["Agent"])
 
 @router.post("/chat/invoke", response_model=ChatResponse, summary="非流式聊天")

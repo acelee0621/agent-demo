@@ -31,16 +31,17 @@ async def lifespan(app: FastAPI) -> AsyncIterator[AppState]:
     # 加载 LLM
     llm = get_llm()
 
-    # 简单的健康检查
+    # LLM健康检查
     try:
         test_response = await llm.ainvoke("Hello")
         logger.success(f"✅ LLM 健康检查通过: {test_response.content[:50]}...")
     except Exception as e:
-        logger.warning(f"⚠️  LLM 健康检查警告: {e}")
+        logger.error(f"❌ LLM 初始化失败: {e}")
+        raise RuntimeError("LLM 初始化失败，应用启动中止")
 
     # 组装 LangGraph Agent
-    agent = assemble_langgraph_agent(llm)
-    
+    agent = await assemble_langgraph_agent(llm)
+
     # 更加类型安全的写法
     yield AppState(llm=llm, agent=agent)
 

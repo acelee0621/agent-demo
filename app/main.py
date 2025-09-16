@@ -1,7 +1,11 @@
 from fastapi import FastAPI
-from app.api.v1.agent import router as agent_router
-from app.lifespan import lifespan
 from loguru import logger
+import gradio as gr
+
+from app.api.query_routes import router as agent_router
+from app.lifespan import lifespan
+from app.gradio_ui import gradio_app
+
 
 app = FastAPI(
     title="AI Agent API",
@@ -19,8 +23,13 @@ async def root():
     return {
         "message": "AI Agent API",
         "status": "running",
-        "endpoints": {"agent": "/chat/invoke", "models": "/model"},
+        "endpoints": {"agent": "/chat/invoke", "models": "/model","UI":"/ui"},
     }
+
+
+# --- 将 Gradio 应用挂载到 FastAPI ---
+# 这会在应用下创建一个 /ui 路径，用于展示 UI 界面
+app = gr.mount_gradio_app(app, gradio_app, path="/ui")
 
 
 if __name__ == "__main__":
