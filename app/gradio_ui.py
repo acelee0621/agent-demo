@@ -18,7 +18,7 @@ def chat(message, history):
         if line.startswith("data:"):
             chunk = json.loads(line[5:])["content"]
             buffer += chunk
-            yield buffer
+            yield gr.ChatMessage(role="assistant", content=buffer)
 
 
-gradio_app = gr.ChatInterface(chat, title="FastAPI-Agent Chat")
+gradio_app = gr.ChatInterface(chat,type='messages', title="FastAPI-Agent Chat")

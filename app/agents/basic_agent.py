@@ -32,7 +32,7 @@ async def assemble_langgraph_agent(llm: ChatOllama) -> Runnable:
         model=llm,
         tools=tools,
         checkpointer=memory,
-        # prompt="你是中文智能助手，回答简洁友好。"
+        prompt="你是中文智能助手，回答简洁友好。"
     )
 
     logger.success(f"✅ LangGraph Agent 组装完成，使用模型: {llm.model}")
